@@ -34,16 +34,16 @@ except ImportError:
 from ansible.module_utils.urls import open_url, urllib_error
 from ansible.module_utils.six.moves import urllib_parse
 
-try:
+#try:
     # => TODO:  Find a better way to handle this!!!
     # => When unit testing, we need to look in the correct location however, when run via ansible,
     # => the expectation is that the modules will live under ansible.
-    from cohesity_management_sdk.cohesity_client import CohesityClient
-    from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_utilities import (
-        raise__cohesity_exception__handler,
-    )
-except Exception:
-    pass
+from cohesity_management_sdk.cohesity_client import CohesityClient
+from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_utilities import (
+    raise__cohesity_exception__handler,
+)
+#except Exception:
+#    pass
 
 
 class ParameterViolation(Exception):
