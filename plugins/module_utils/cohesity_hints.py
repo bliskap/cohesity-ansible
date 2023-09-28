@@ -48,9 +48,11 @@ except Exception:
 
 try:
     from cohesity_management_sdk.cohesity_client import CohesityClient
-except ImportError as imp_exc:
-    COHESITY_SDK_IMPORT_ERROR = imp_exc
+except ImportError:
+    HAS_COHESITY_SDK = False
+    COHESITY_SDK_IMPORT_ERROR = traceback.format_exc()
 else:
+    HAS_COHESITY_SDK = True
     COHESITY_SDK_IMPORT_ERROR = None
 
 
@@ -73,8 +75,11 @@ def get_cohesity_client(module):
     :return:
     """
 
-    if COHESITY_SDK_IMPORT_ERROR:
-        raise AnsibleError('cohesity-management-sdk is required to use this plugin') from COHESITY_SDK_IMPORT_ERROR
+    if not HAS_COHESITY_SDK:
+        module.fail_json(
+            msg=missing_required_lib('cohesity_management_sdk_bruh'),
+            exception=COHESITY_SDK_IMPORT_ERROR
+        )
 
     try:
         cluster_vip = module.params.get("cluster")
