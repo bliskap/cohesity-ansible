@@ -33,17 +33,25 @@ except ImportError:
 
 from ansible.module_utils.urls import open_url, urllib_error
 from ansible.module_utils.six.moves import urllib_parse
+from ansible.module_utils.basic import missing_required_lib
 
-#try:
+try:
     # => TODO:  Find a better way to handle this!!!
     # => When unit testing, we need to look in the correct location however, when run via ansible,
     # => the expectation is that the modules will live under ansible.
-from cohesity_management_sdk.cohesity_client import CohesityClient
-from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_utilities import (
-    raise__cohesity_exception__handler,
-)
-#except Exception:
-#    pass
+    #from cohesity_management_sdk.cohesity_client import CohesityClient
+    from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_utilities import (
+        raise__cohesity_exception__handler,
+    )
+except Exception:
+    pass
+
+try:
+    from cohesity_management_sdk.cohesity_client import CohesityClient
+except ImportError as imp_exc:
+    COHESITY_SDK_IMPORT_ERROR = imp_exc
+else:
+    COHESITY_SDK_IMPORT_ERROR = None
 
 
 class ParameterViolation(Exception):
@@ -64,6 +72,10 @@ def get_cohesity_client(module):
     :param module: object that holds parameters passed to the module
     :return:
     """
+
+    if COHESITY_SDK_IMPORT_ERROR:
+        raise AnsibleError('cohesity-management-sdk is required to use this plugin') from COHESITY_SDK_IMPORT_ERROR
+
     try:
         cluster_vip = module.params.get("cluster")
         username = module.params.get("username")

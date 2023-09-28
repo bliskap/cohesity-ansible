@@ -120,26 +120,26 @@ from ansible.module_utils.basic import AnsibleModule
 
 import traceback
 
-#try:
-from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_auth import (
-    get__cohesity_auth__token,
-)
-from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_utilities import (
-    cohesity_common_argument_spec,
-)
-from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_hints import (
-    get__cluster,
-    get__nodes,
-    get_cohesity_client,
-    get__prot_source__all,
-    get__prot_policy__all,
-    get__prot_job__all,
-    get__storage_domain_id__all,
-    get__protection_run__all,
-)
+try:
+    from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_auth import (
+        get__cohesity_auth__token,
+    )
+    from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_utilities import (
+        cohesity_common_argument_spec,
+    )
+    from ansible_collections.cohesity.dataprotect.plugins.module_utils.cohesity_hints import (
+        get__cluster,
+        get__nodes,
+        get_cohesity_client,
+        get__prot_source__all,
+        get__prot_policy__all,
+        get__prot_job__all,
+        get__storage_domain_id__all,
+        get__protection_run__all,
+    )
 
-#except Exception:
-#    pass
+except Exception:
+    pass
 
 
 class FactsError(Exception):
